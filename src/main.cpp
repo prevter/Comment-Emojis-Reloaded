@@ -8,6 +8,8 @@
 #include "emoji-picker.hpp"
 #include "emojis.hpp"
 
+using namespace geode::prelude;
+
 constexpr bool isValidUsernameChar(char c) {
     return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || c == '_';
 }
@@ -121,16 +123,16 @@ class $modify(CommentCellHook, CommentCell) {
 
 class $modify(ShareCommentLayerHook, ShareCommentLayer) {
     bool init(gd::string title, int charLimit, CommentType type, int ID, gd::string desc) {
-        if (!ShareCommentLayer::init(title, charLimit, type, ID, desc)) {
+        if (!ShareCommentLayer::init(std::move(title), charLimit, type, ID, std::move(desc))) {
             return false;
         }
 
-        auto btnSprite = cocos2d::CCSprite::create("picker_icon.png"_spr);
+        auto btnSprite = CCSprite::create("picker_icon.png"_spr);
         btnSprite->setScale(0.75f);
         btnSprite->setColor({ 0, 0, 0 });
         btnSprite->setOpacity(105);
-    
-        auto btn = geode::cocos::CCMenuItemExt::createSpriteExtra(
+
+        auto btn = CCMenuItemExt::createSpriteExtra(
             btnSprite, [this](auto) {
                 EmojiPicker::create(m_commentInput)->show();
             }

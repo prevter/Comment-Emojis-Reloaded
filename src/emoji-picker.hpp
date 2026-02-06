@@ -6,7 +6,7 @@
 #include "scroll-layer.hpp"
 #include "utils.hpp"
 
-class EmojiPicker final : public geode::Popup<CCTextInputNode*> {
+class EmojiPicker final : public geode::Popup {
 protected:
     CCTextInputNode* m_originalField = nullptr;
     ScrollLayer* m_scrollLayer = nullptr;
@@ -19,7 +19,7 @@ public:
     static EmojiPicker* create(CCTextInputNode* input);
 
 protected:
-    bool setup(CCTextInputNode* input) override;
+    bool init(CCTextInputNode* input);
 
     static CCNode* createEmojiSprite(std::string_view emoji);
     static CCNode* encloseInContainer(CCNode* node, float size);
@@ -28,7 +28,7 @@ protected:
     static std::vector<std::string> getFrequentlyUsedEmojis();
     static std::vector<std::string> getFavoriteEmojis();
 
-    static void incrementEmojiUsage(std::string const& emoji);
+    static void incrementEmojiUsage(geode::ZStringView emoji);
     static void toggleFavoriteEmoji(std::string const& emoji);
 
     void recreateGroups() const;

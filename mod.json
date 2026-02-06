@@ -1,10 +1,10 @@
 {
-	"geode": "4.7.0",
+	"geode": "5.0.0-alpha.1",
 	"gd": {
-		"win": "2.2074",
-		"android": "2.2074",
-		"mac": "2.2074",
-		"ios": "2.2074"
+		"win": "2.2081",
+		"android": "2.2081",
+		"mac": "2.2081",
+		"ios": "2.2081"
 	},
 	"id": "prevter.comment_emojis",
 	"name": "Comment Emojis Reloaded",
@@ -45,13 +45,14 @@
 		"sprites": [ "resources/picker_icon.png" ]
 	},
 	"dependencies": {
-		"geode.node-ids": "1.19.0"
+		"geode.node-ids": ">=1.19.0"
 	},
-	"incompatibilities": [{
-		"id": "thesillydoggo.comment_emojis",
-		"version": "*",
-		"importance": "conflicting"
-	}],
+	"incompatibilities": {
+		"thesillydoggo.comment_emojis": {
+			"version": ">=1.0.0",
+			"importance": "conflicting"
+		}
+	},
 	"settings": {
 		"frequently-used-emojis-limit": {
 			"name": "Frequently Used Emojis Limit",
