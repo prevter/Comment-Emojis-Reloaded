@@ -1,5 +1,5 @@
 #pragma once
-#include "label.hpp"
+#include <AdvancedLabel.hpp>
 #include "utils.hpp"
 
 #include <Geode/binding/GJSearchObject.hpp>

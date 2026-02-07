@@ -8,12 +8,12 @@
 // taken from Object Workshop (a hybrid of robtops cocos and geode)
 class ScrollLayer : public CCScrollLayerExt, public CCScrollLayerExtDelegate {
 protected:
-    bool m_scrollWheelEnabled;
     cocos2d::CCTouch* m_touchStart{};
     cocos2d::CCPoint m_touchStartPosition2;
     cocos2d::CCPoint m_touchPosition2;
-    bool m_touchMoved{};
     float m_touchLastY{};
+    bool m_scrollWheelEnabled;
+    bool m_touchMoved{};
     bool m_cancellingTouches{};
 
     void cancelAndStoleTouch(cocos2d::CCTouch*, cocos2d::CCEvent*);

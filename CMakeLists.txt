@@ -13,7 +13,6 @@ project(CommentEmojis VERSION 1.2.1)
 
 add_library(${PROJECT_NAME} SHARED
     src/main.cpp
-    src/label.cpp
     src/animated-sprite.cpp
     src/emoji-picker.cpp
     src/scroll-layer.cpp
@@ -40,5 +39,7 @@ endif()
 
 add_subdirectory($ENV{GEODE_SDK} ${CMAKE_CURRENT_BINARY_DIR}/geode)
 
+CPMAddPackage("gh:prevter/AdvancedLabel#a800983")
+target_link_libraries(${PROJECT_NAME} advanced_label)
 
 setup_geode_mod(${PROJECT_NAME} EXTERNALS geode.node-ids:1.19.0)

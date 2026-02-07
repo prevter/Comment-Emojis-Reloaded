@@ -93,7 +93,7 @@ class $modify(CommentCellHook, CommentCell) {
             newText->setExtraLineSpacing(12.f);
             newText->setBreakWords(48);
             newText->setAnchorPoint({0.f, 0.5f});
-            newText->setPosition({11.f, m_accountComment ? 38.f : 33.f});
+            newText->setPosition({10.f, m_accountComment ? 38.f : 33.f});
             newText->setID("comment-text-area"_spr);
         }
         else if (auto oldLabel = static_cast<cocos2d::CCLabelBMFont*>(m_mainLayer->getChildByID("comment-text-label"))) {
