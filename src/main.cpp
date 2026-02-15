@@ -56,13 +56,6 @@ std::string replaceEmojis(std::string_view text) {
     return result;
 }
 
-class $modify(ClearFontCacheHook, GameManager) {
-    void reloadAllStep5() {
-        GameManager::reloadAllStep5();
-        BMFontConfiguration::purgeCachedData();
-    }
-};
-
 class $modify(CommentCellHook, CommentCell) {
     static void onModify(auto& self) {
         (void) self.setHookPriority("CommentCell::loadFromComment", geode::Priority::LatePost);

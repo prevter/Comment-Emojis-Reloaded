@@ -1,5 +1,5 @@
 {
-	"geode": "5.0.0-alpha.1",
+	"geode": "5.0.0-beta.1",
 	"gd": {
 		"win": "2.2081",
 		"android": "2.2081",
@@ -8,7 +8,7 @@
 	},
 	"id": "prevter.comment_emojis",
 	"name": "Comment Emojis Reloaded",
-	"version": "v1.2.2",
+	"version": "v1.3.0",
 	"developer": "prevter",
 	"description": "Emojis support in comments",
 	"tags": [ "customization", "interface", "enhancement", "online" ],
@@ -24,34 +24,17 @@
 				"resources/emojis/cat/*.png",
 				"resources/emojis/players/*.png",
 				"resources/emojis/samsung/*.png"
-			],
-			"AnimojiSheet": [
-				"resources/emojis/animated/bonk/*.png",
-				"resources/emojis/animated/colonthreecat/*.png",
-				"resources/emojis/animated/cubedance/*.png",
-				"resources/emojis/animated/cubehyperthink/*.png",
-				"resources/emojis/animated/cubespeen/*.png",
-				"resources/emojis/animated/deltaruneexplosion/*.png",
-				"resources/emojis/animated/fishspin/*.png",
-				"resources/emojis/animated/hype/*.png",
-				"resources/emojis/animated/ned_explosion/*.png",
-				"resources/emojis/animated/partying/*.png",
-				"resources/emojis/animated/petmaurice/*.png",
-				"resources/emojis/animated/polarbear/*.png",
-				"resources/emojis/animated/shiggy/*.png",
-				"resources/emojis/animated/trolleyzoom/*.png"
 			]
 		},
-		"sprites": [ "resources/picker_icon.png" ]
+		"sprites": [ "resources/picker_icon.png" ],
+		"files": [ "resources/emojis/animated/*.webp" ]
 	},
 	"dependencies": {
-		"geode.node-ids": ">=1.19.0"
+		"geode.node-ids": ">=1.19.0",
+		"prevter.imageplus": ">=1.0.5"
 	},
 	"incompatibilities": {
-		"thesillydoggo.comment_emojis": {
-			"version": ">=1.0.0",
-			"importance": "conflicting"
-		}
+		"thesillydoggo.comment_emojis": ">=1.0.0"
 	},
 	"settings": {
 		"frequently-used-emojis-limit": {

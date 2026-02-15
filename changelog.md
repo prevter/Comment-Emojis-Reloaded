@@ -1,3 +1,9 @@
+# 1.3.0
+- Bump Geode version to v5.0.0
+- GD 2.2081 support
+- Switched to ImagePlus dependency to use webp animated emojis
+- Performance improvements in text rendering
+
 # 1.2.2
 - Bump Geode version to 4.7.0
 - Added iOS JIT-less support

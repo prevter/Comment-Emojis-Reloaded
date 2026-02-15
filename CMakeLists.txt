@@ -39,7 +39,7 @@ endif()
 
 add_subdirectory($ENV{GEODE_SDK} ${CMAKE_CURRENT_BINARY_DIR}/geode)
 
-CPMAddPackage("gh:prevter/AdvancedLabel#a800983")
+CPMAddPackage("gh:prevter/AdvancedLabel#0c702d6")
 target_link_libraries(${PROJECT_NAME} advanced_label)
 
 setup_geode_mod(${PROJECT_NAME} EXTERNALS geode.node-ids:1.19.0)

@@ -10,7 +10,7 @@
 #include <tuple>
 #include <utility>
 
-inline cocos2d::ccColor3B getTextAreaColor(const TextArea* textArea) {
+inline cocos2d::ccColor3B getTextAreaColor(TextArea const* textArea) {
     auto lines = textArea->m_label->m_lines;
     if (!lines || lines->count() == 0) {
         return cocos2d::ccc3(255, 255, 255);
@@ -37,7 +37,7 @@ struct StringLiteral {
     static constexpr size_t Size = N;
     char value[N]{};
     constexpr StringLiteral() = default;
-    constexpr StringLiteral(const char (&str)[N]) { std::copy_n(str, N, value); }
+    constexpr StringLiteral(char const (&str)[N]) { std::copy_n(str, N, value); }
     constexpr operator std::string_view() const { return { value, N - 1 }; }
     constexpr operator geode::geode_internal::StringConcatModIDSlash<N>() const { return value; }
 };
@@ -46,7 +46,7 @@ template <size_t N>
 struct StringLiteralUTF32 {
     static constexpr size_t Size = N;
     char32_t value[N]{};
-    constexpr StringLiteralUTF32(const char32_t (&str)[N]) { std::copy_n(str, N, value); }
+    constexpr StringLiteralUTF32(char32_t const (&str)[N]) { std::copy_n(str, N, value); }
     constexpr StringLiteralUTF32(char32_t chr) { value[0] = chr; }
     constexpr operator std::u32string_view() const { return { value, N - 1 }; }
 };
@@ -99,19 +99,19 @@ struct EmojiToHexConverter {
         filename[index] = '\0';
     }
 
-    constexpr std::pair<std::u32string_view, const char*> operator()() const {
+    constexpr std::pair<std::u32string_view, char const*> operator()() const {
         return { std::u32string_view(value, length), filename };
     }
 };
 
 template <EmojiToHexConverter S>
-constexpr std::pair<std::u32string_view, const char*> operator""_emoji() { return S(); }
+constexpr std::pair<std::u32string_view, char const*> operator""_emoji() { return S(); }
 
 template <char32_t C>
 constexpr auto SingleEmoji = EmojiToHexConverter(StringLiteralUTF32<2>{C}.value);
 
 template <char32_t C>
-constexpr std::pair<std::u32string_view, const char*> Sprite = {
+constexpr std::pair<std::u32string_view, char const*> Sprite = {
     std::u32string_view(SingleEmoji<C>.value, SingleEmoji<C>.length),
     SingleEmoji<C>.filename
 };
@@ -151,12 +151,13 @@ struct custom_emoji {
     constexpr operator Emoji() const { return emoji; }
 };
 
-template <geode::geode_internal::StringConcatModIDSlash Prefix, size_t FrameCount, size_t FPS>
+template <geode::geode_internal::StringConcatModIDSlash Prefix>
 cocos2d::CCNode* GetFrameAnimation(std::u32string_view, uint32_t&) {
-    return FrameAnimation::create(Prefix.buffer, FrameCount, 1.f / FPS);
+    geode::log::debug("Creating {}", Prefix.buffer);
+    return cocos2d::CCSprite::create(Prefix.buffer);
 }
 
-template <StringLiteral Name, size_t FrameCount, size_t FPS, char32_t C>
+template <StringLiteral Name, bool Animated, char32_t C>
 struct animoji {
     static constexpr auto Name2 = []{
         StringLiteral<Name.Size + 2> name;
@@ -165,19 +166,29 @@ struct animoji {
         name.value[Name.Size] = ':';
         return name;
     }();
+    static constexpr auto FileName = [] {
+        StringLiteral<Name.Size + 5> name;
+        std::copy_n(Name.value, Name.Size, name.value);
+        name.value[Name.Size - 1] = '.';
+        name.value[Name.Size + 0] = 'w';
+        name.value[Name.Size + 1] = 'e';
+        name.value[Name.Size + 2] = 'b';
+        name.value[Name.Size + 3] = 'p';
+        return name;
+    }();
     static constexpr auto emoji = CustomEmoji<Name2, C>;
-    static constexpr geode::geode_internal::StringConcatModIDSlash<Name.Size> prefix = Name;
+    static constexpr geode::geode_internal::StringConcatModIDSlash<FileName.Size> prefix = FileName;
     static constexpr char32_t value = C;
     static constexpr auto name = std::u32string_view(SingleEmoji<C>.value, SingleEmoji<C>.length);
-    static constexpr auto func = &GetFrameAnimation<prefix, FrameCount, FPS>;
+    static constexpr auto func = &GetFrameAnimation<prefix>;
 
     constexpr operator Emoji() const { return emoji; }
-    operator Label::CustomNodeMap::value_type() const {
+    constexpr operator Label::CustomNodeMap::value_type() const {
         return { name, func };
     }
 };
 
-template <StringLiteral Name, StringLiteral Utf8, StringLiteralUTF32 Utf32, size_t FrameCount = 0, size_t FPS = 0, bool Hidden = false>
+template <StringLiteral Name, StringLiteral Utf8, StringLiteralUTF32 Utf32, bool Animated = false, bool Hidden = false>
 struct UnimojiBase {
     static constexpr auto name = Name;
     static constexpr auto placeholder = [] {
@@ -190,30 +201,28 @@ struct UnimojiBase {
     }();
     static constexpr auto utf8 = Utf8;
     static constexpr auto utf32 = Utf32;
-    static constexpr auto frames = FrameCount;
-    static constexpr auto fps = FPS;
     static constexpr auto isHidden = Hidden;
-    static constexpr auto isAnimated = FrameCount > 0;
+    static constexpr auto isAnimated = Animated;
 
     static constexpr auto converter = EmojiToHexConverter<Utf32.Size>{ Utf32.value };
-    static constexpr auto sprite = std::pair<std::u32string_view, const char*> { Utf32.value, converter.filename };
+    static constexpr auto sprite = std::pair<std::u32string_view, char const*> { Utf32.value, converter.filename };
     static constexpr auto emoji = Emoji{ placeholder, Utf8 };
-    static constexpr auto animatedSprite = animoji<Name, FrameCount, FPS, Utf32.value[0]>{};
+    static constexpr auto animatedSprite = animoji<Name, Animated, Utf32.value[0]>{};
 };
 
-template <StringLiteral Name, char32_t C, size_t FrameCount = 0, size_t FPS = 0, bool Hidden = false>
-struct Unimoji : UnimojiBase<Name, StringLiteral<1>{}, StringLiteralUTF32<2>{C}, FrameCount, FPS, Hidden> {
+template <StringLiteral Name, char32_t C, bool Animated = false, bool Hidden = false>
+struct Unimoji : UnimojiBase<Name, StringLiteral<1>{}, StringLiteralUTF32<2>{C}, Animated, Hidden> {
     static constexpr auto emojiChar = C;
     static constexpr auto emoji = CustomEmoji<Unimoji::placeholder, C>;
     static constexpr auto sprite = Sprite<C>;
-    static constexpr auto animatedSprite = animoji<Name, FrameCount, FPS, C>{};
+    static constexpr auto animatedSprite = animoji<Name, Animated, C>{};
 };
 
 template <StringLiteral Name, char32_t C>
-using HiddenUnimoji = Unimoji<Name, C, 0, 0, true>;
+using HiddenUnimoji = Unimoji<Name, C, false, true>;
 
 template <StringLiteral Name, StringLiteral Utf8, StringLiteralUTF32 Utf32, bool Hidden = false>
-using UnimojiUtf8 = UnimojiBase<Name, Utf8, Utf32, 0, 0, Hidden>;
+using UnimojiUtf8 = UnimojiBase<Name, Utf8, Utf32, false, Hidden>;
 
 struct EmojiCategory {
     std::string_view name;
@@ -221,7 +230,7 @@ struct EmojiCategory {
     std::vector<std::string> emojis;
 };
 
-using EmojiMapEntry = std::pair<std::u32string_view, const char*>;
+using EmojiMapEntry = std::pair<std::u32string_view, char const*>;
 using AnimatedEntry = std::pair<std::u32string_view, cocos2d::CCNode*(*)(std::u32string_view, uint32_t&)>;
 
 template <StringLiteral Name, StringLiteral Icon, typename... Emojis>
@@ -287,7 +296,7 @@ constexpr size_t CountEmojisImpl(auto tuple) {
 }
 
 template <typename T, size_t S>
-constexpr auto array_to_tuple(const std::array<T, S>& arr) {
+constexpr auto array_to_tuple(std::array<T, S> const& arr) {
     return [&]<size_t... I>(std::index_sequence<I...>) {
         return std::tuple(arr[I]...);
     }(std::make_index_sequence<S>{});

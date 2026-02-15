@@ -134,11 +134,11 @@ constexpr auto EmojiGroups = std::tuple<
         Unimoji<"spunchbob", 0x1c06a>,       Unimoji<"freakbob", 0x1c06b>,
         Unimoji<"nuhuh", 0x1c06c>,           Unimoji<"yuhuh", 0x1c06d>,
         // Animated
-        Unimoji<"shiggy", 0x1c600, 10, 50>,        Unimoji<"hype", 0x1c601, 10, 14>,
-        Unimoji<"petmaurice", 0x1c602, 5, 20>,     Unimoji<"bonk", 0x1c603, 17, 16>,
-        Unimoji<"partying", 0x1c604, 12, 25>,      Unimoji<"ned_explosion", 0x1c605, 12, 50>,
-        Unimoji<"polarbear", 0x1c606, 13, 33>,     Unimoji<"colonthreecat", 0x1c607, 111, 33>,
-        Unimoji<"deltaruneexplosion", 0x1c60b, 17, 17>
+        Unimoji<"shiggy", 0x1c600, true>,     Unimoji<"hype", 0x1c601, true>,
+        Unimoji<"petmaurice", 0x1c602, true>, Unimoji<"bonk", 0x1c603, true>,
+        Unimoji<"partying", 0x1c604, true>,   Unimoji<"ned_explosion", 0x1c605, true>,
+        Unimoji<"polarbear", 0x1c606, true>,  Unimoji<"colonthreecat", 0x1c607, true>,
+        Unimoji<"deltaruneexplosion", 0x1c60b, true>
     >,
     EmojiGroup<
         "Custom Emojis", ":eyesShock:",
@@ -153,7 +153,7 @@ constexpr auto EmojiGroups = std::tuple<
         Unimoji<"steam_happy", 0x1c110>,     Unimoji<"trol", 0x1c111>,
         Unimoji<"trolley", 0x1c112>,         Unimoji<"alphablep", 0x1c113>,
         // Animated
-        Unimoji<"trolleyzoom", 0x1c60c, 178, 25>, Unimoji<"fishspin", 0x1c60d, 144, 28>
+        Unimoji<"trolleyzoom", 0x1c60c, true>, Unimoji<"fishspin", 0x1c60d, true>
     >,
     EmojiGroup<
         "Samsung Emojis", ":grinning:",
@@ -178,11 +178,11 @@ constexpr auto EmojiGroups = std::tuple<
         Unimoji<"cubethink", 0x1c079>,    Unimoji<"cubeview", 0x1c07a>,
         Unimoji<"cubewave", 0x1c07b>,     Unimoji<"cubewink", 0x1c07c>,
         Unimoji<"defaultangry", 0x1c07d>, Unimoji<"eeyikes", 0x1c07e>,
-        Unimoji<"fumocube", 0x1c07f>,     Unimoji<"robtoppixel", 0x1c080>, 
+        Unimoji<"fumocube", 0x1c07f>,     Unimoji<"robtoppixel", 0x1c080>,
         Unimoji<"boshytime", 0x1c070>,    Unimoji<"smugzero", 0x1c081>,
         // Animated
-        Unimoji<"cubedance", 0x1c608, 6, 14>,      Unimoji<"cubespeen", 0x1c609, 12, 25>,
-        Unimoji<"cubehyperthink", 0x1c60a, 6, 20>
+        Unimoji<"cubedance", 0x1c608, true>, Unimoji<"cubespeen", 0x1c609, true>,
+        Unimoji<"cubehyperthink", 0x1c60a, true>
     >,
     EmojiGroup<
         "Cat Emotes (C# Discord Server)", ":catgun:",
